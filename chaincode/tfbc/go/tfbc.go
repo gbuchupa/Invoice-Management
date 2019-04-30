@@ -43,14 +43,14 @@ type SmartContract struct {
 
 // Define the letter of credit
 type LetterOfCredit struct {
-	InvoiceId		string		`json:"invoiceId"`
-	InvoiceDate		string		`json:"invoiceDate"`
-	Supplier    	string   	`json:"supplier"`
-	Customer		string		`json:"customer"`	
-	PaymentTerms	string		`json:"paymentTerms"`
-	Amount			int			`json:"amount"`
-	Notes			string		`json:"notes"`
-	Status			string		`json:"status"`
+	InvoiceId string `json:"invoiceId"`
+	InvoiceDate string `json:"invoiceDate"`
+	Supplier string `json:"supplier"`
+	Customer string `json:"customer"`
+	PaymentTerms string `json:"paymentTerms"`
+	Amount int `json:"amount"`
+	Notes string `json:"notes"`
+	Status string `json:"status"`
 }
 
 
@@ -103,7 +103,6 @@ func (s *SmartContract) issueInvoice(APIstub shim.ChaincodeStubInterface, args [
     APIstub.PutState(invoiceId,LCBytes)
 	fmt.Println("Invoice Issued -> ", LC)
 
-	
 
 	return shim.Success(nil)
 }
@@ -112,7 +111,6 @@ func (s *SmartContract) issueInvoice(APIstub shim.ChaincodeStubInterface, args [
 func (s *SmartContract) acceptInvoice(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	invoiceId := args[0];
-	
 	// if err != nil {
 	// 	return shim.Error("No Amount")
 	// }
@@ -145,8 +143,6 @@ func (s *SmartContract) acceptInvoice(APIstub shim.ChaincodeStubInterface, args 
 func (s *SmartContract) payInvoice(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	invoiceId := args[0];
-	
-	
 
 	LCAsBytes, _ := APIstub.GetState(invoiceId)
 
@@ -170,7 +166,6 @@ func (s *SmartContract) payInvoice(APIstub shim.ChaincodeStubInterface, args []s
 	fmt.Println("Invoice Paid -> ", LC)
 
 
-	
 
 	return shim.Success(nil)
 }
@@ -178,7 +173,6 @@ func (s *SmartContract) payInvoice(APIstub shim.ChaincodeStubInterface, args []s
 func (s *SmartContract) getInvoice(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	invoiceId := args[0];
-	
 	// if err != nil {
 	// 	return shim.Error("No Amount")
 	// }
@@ -191,8 +185,6 @@ func (s *SmartContract) getInvoice(APIstub shim.ChaincodeStubInterface, args []s
 func (s *SmartContract) getInvoiceHistory(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	invoiceId := args[0];
-	
-	
 
 	resultsIterator, err := APIstub.GetHistoryForKey(invoiceId)
 	if err != nil {
@@ -246,7 +238,6 @@ func (s *SmartContract) getInvoiceHistory(APIstub shim.ChaincodeStubInterface, a
 
 	fmt.Printf("- getInvoiceHistory returning:\n%s\n", buffer.String())
 
-	
 
 	return shim.Success(buffer.Bytes())
 }
