@@ -1,44 +1,93 @@
+Step#1: Install Below Mentioned Pre-requisites on the machine
+1. Install Go1.9 
+• curl -O https://storage.googleapis.com/golang/go1.11.2.linux-amd64.tar.gz
+• tar -xvf go1.11.2.linux-amd64.tar.gz
+• sudo mv go /usr/local
+• sudo nano ~/.profile
+  export GOPATH=$HOME/work
+  export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+
+2. Install npm 
+○ Check if node is already installed by node -v command
+○ Follow below sequence to install NodeJs on Ubuntu 16.04( For other operating systems installations steps please follow Starter Kit ReadMe file)
+	§ sudo apt install curl
+	§ curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+	§ sudo apt install nodejs
+
+3. Install Python
+	○ sudo apt-get install python
+
+4. Install Docker
+	○ sudo apt-get update
+	○ sudo apt-get install \
+    	apt-transport-https \
+    	ca-certificates \
+    	curl \
+    	software-properties-common
+	○ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	○ sudo add-apt-repository \
+   	"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   	$(lsb_release -cs) \
+   	stable"
+	○ sudo apt-get update
+	○ sudo apt-get install docker-ce
+	○ cat /etc/group | grep docker
+	○ sudo usermod -aG docker ubuntu
+	○ cat /etc/group | grep docker
+	○ Logout and log back in to machine
+
+5. Install Docker Compose
+	○ sudo apt-get install docker-compose
+
+6. Clone Trade Finance from github
+	• sudo git clone https://github.com/gbuchupa/Invoice-Management.git
+	• sudo chown -R ubuntu:ubuntu hlf-trade-finance/
+	• cd  Invoice-Management
+	• git checkout release
+
+7. Create ".env" file under project directory, if not already existing.
+	• cd /Invoice-Management
+	• vim .env
+	COMPOSE_PROJECT_NAME=net
+	IMAGE_TAG=latest
+
 # Invoice Management on Hyperledger Fabric (*** Only Issue, Accept, Pay, View and History Details of Invoice implemented ***)
 Trade finance application on Hyperledger Fabric
 
 *** Use sudo prefix to commands if you get permission denied error while executing any command, assumption is you already have  required software to run Hyperledger fabric network and node SDK *** 
 
-## Start the Hyperledger Fabric Network 
+Step#2: Start the Hyperledger Fabric Network 
+	cd hlf-trade-finance
+	./start.sh (with this you will start docker-compose.yml up -d )
 
-1. cd hlf-trade-finance
-2. ./start.sh (with this you will start docker-compose.yml up -d )
+Step#3: Setup the Hyperledger Fabric Network
+	cd hlf-trade-finance
+	./setup.sh (With this you will create the channel genesis block, add the peer0 to the channel created and instantiate tfbc 		chaincode.) 
 
-## Setup the Hyperledger Fabric Network
-
-1. cd hlf-trade-finance
-2. ./setup.sh (With this you will create the channel genesis block, add the peer0 to the channel created and instantiate tfbc chaincode.) 
-
-*** In this usecase CA's are already generated. 
-
+//*** In this usecase CA's are already generated. 
 We **do not have to run** the following again:
 
-1. "generate --config=crypto-config.yaml"
-2. "TFBCOrgOrdererGenesis -outputBlock ./config/genesis.block" 
-3. "TFBCOrgChannel -outputCreateChannelTx ./config/tfbcchannel.tx -channelID tfbcchannel". 
+	1. "generate --config=crypto-config.yaml"
+	2. "TFBCOrgOrdererGenesis -outputBlock ./config/genesis.block" 
+	3. "TFBCOrgChannel -outputCreateChannelTx ./config/tfbcchannel.tx -channelID tfbcchannel". 
+These three statements are part of the "generate.sh" file here. //
 
-These three statements are part of the "generate.sh" file here. 
+
+Step#5: Setup API users 
+	○ cd Invoice-Management/tfbc-api
+	○ sudo apt install build-essential g++
+	○ npm install -g
+	○ rm hfc-key-store/*
+	○ node enrollBankUser.js
+	○ node enrollBuyerUser.js
+	○ node enrollSellerUser.js
 
 
-## Setup API users 
+Step#6: Run Node APIs
+	cd hlf-trade-finance/tfbc-api
+	npm start
 
-1. cd hlf-trade-finance/tfbc-api
-2. npm install
-3. rm hfc-key-store/*
-4. node enrollBankUser.js
-5. node enrollBuyerUser.js
-6. node enrollSellerUser.js
-
-## Run Node APIs
-
-1. cd hlf-trade-finance/tfbc-api
-2. npm start
-
-## Execute APIs on Swagger UI 
+Step#7: Execute APIs on Swagger UI 
 (Swagger allows you to describe the structure of your APIs so that machines can read them. The ability of APIs to describe their own structure is the root of all awesomeness in Swagger. Why is it so great? Well, by reading your API’s structure, we can automatically build beautiful and interactive API documentation. We can also automatically generate client libraries for your API in many languages and explore other possibilities like automated testing. Swagger does this by asking your API to return a YAML or JSON that contains a detailed description of your entire API.)
 
 - To check this application specific swagger file go to:  hlf-trade-finance/tfbc-api/swagger.json 
