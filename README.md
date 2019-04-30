@@ -1,11 +1,11 @@
 Step#1: Install Below Mentioned Pre-requisites on the machine
 1. Install Go1.9 
-• curl -O https://storage.googleapis.com/golang/go1.11.2.linux-amd64.tar.gz
-• tar -xvf go1.11.2.linux-amd64.tar.gz
-• sudo mv go /usr/local
-• sudo nano ~/.profile
-  export GOPATH=$HOME/work
-  export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+	• curl -O https://storage.googleapis.com/golang/go1.11.2.linux-amd64.tar.gz
+	• tar -xvf go1.11.2.linux-amd64.tar.gz
+	• sudo mv go /usr/local
+	• sudo nano ~/.profile
+  	export GOPATH=$HOME/work
+  	export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 2. Install npm 
 ○ Check if node is already installed by node -v command
